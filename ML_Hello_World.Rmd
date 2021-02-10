@@ -1,0 +1,15 @@
+---
+title: "Machine Learning Hello World"
+output: html_notebook
+---
+
+
+load caret
+```{r}
+library(caret)
+```
+load data
+```{r}
+dataset_iris <- data(iris)
+```
+
