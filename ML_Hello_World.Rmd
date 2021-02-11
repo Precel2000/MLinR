@@ -7,9 +7,71 @@ output: html_notebook
 load caret
 ```{r}
 library(caret)
+library(tidyverse)
 ```
 load data
 ```{r}
-dataset_iris <- data(iris)
+dataset <- iris
 ```
+
+We now split the dataset into data used for training (80%) and for testing (20%)
+```{r}
+# create a list of 80% of the rows in the original dataset we can use for training
+validation_index <- createDataPartition(dataset$Species, p=0.80, list=FALSE)
+# select 20% of the data for validation
+validation <- dataset[-validation_index]
+# use the remaining 80% of data to training and testing the models
+dataset_80 <- dataset[validation_index,]
+```
+now we inspect the data
+```{r}
+head(dataset)
+dim(dataset)
+dim(dataset_80)
+```
+dataset has 150 instances and 5 attributes
+dataset_80 has 120 instances and 5 attributes
+
+We now investigate the types for each attribute
+```{r}
+sapply(dataset, class)
+```
+Notice column `Species` is of type factor. What levels are there for `Species`?
+```{r}
+levels(dataset$Species)
+```
+There are 3 possible species, hence we are dealing with a multinomial classification problem.
+
+Now, how many representatives of each species are there?
+```{r}
+dataset %>% group_by(Species) %>% summarise(n())
+```
+The original dataset contains 50 representatives of each species
+```{r}
+dataset_80 %>% group_by(Species) %>% summarise(n())
+```
+The training dataset contains 40 representatives of each species
+
+Now let's visualise the training dataset using box and whiskers diagrams
+```{r}
+# split dependant and independant variables
+x <- dataset_80[,1:4]
+# select only name of species
+y <- dataset_80[,5]
+```
+
+```{r}
+# boxplot for each attribute on one image
+par(mfrow=c(1,4))
+  for(i in 1:4) {
+  boxplot(x[,i], main=names(iris)[i])
+}
+```
+
+
+
+
+
+
+
 

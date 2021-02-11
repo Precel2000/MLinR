@@ -1800,29 +1800,149 @@ summary {
 <p>load caret</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShjYXJldClcbmBgYCJ9 -->
-<pre class="r"><code>library(caret)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShjYXJldClcbmxpYnJhcnkodGlkeXZlcnNlKVxuYGBgIn0= -->
+<pre class="r"><code>library(caret)
+library(tidyverse)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoicGFraWV0IJFjYXJldJIgem9zdGGzIHpidWRvd2FueSB3IHdlcnNqaSBSIDMuNi4zo2Fkb3dhbmllIHd5bWFnYW5lZ28gcGFraWV0dTogbGF0dGljZVxuo2Fkb3dhbmllIHd5bWFnYW5lZ28gcGFraWV0dTogZ2dwbG90MlxucGFraWV0IJFnZ3Bsb3QykiB6b3N0YbMgemJ1ZG93YW55IHcgd2Vyc2ppIFIgMy42LjNSZWdpc3RlcmVkIFMzIG1ldGhvZCBvdmVyd3JpdHRlbiBieSAnZGF0YS50YWJsZSc6XG4gIG1ldGhvZCAgICAgICAgICAgZnJvbVxuICBwcmludC5kYXRhLnRhYmxlICAgICBcbiJ9 -->
-<pre><code>pakiet 㤼㸱caret㤼㸲 zosta戼㸳 zbudowany w wersji R 3.6.3愼㸳adowanie wymaganego pakietu: lattice
-愼㸳adowanie wymaganego pakietu: ggplot2
-pakiet 㤼㸱ggplot2㤼㸲 zosta戼㸳 zbudowany w wersji R 3.6.3Registered S3 method overwritten by &#39;data.table&#39;:
-  method           from
-  print.data.table     </code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>load data</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YXNldF9pcmlzIDwtIGRhdGEoaXJpcylcbmBgYCJ9 -->
-<pre class="r"><code>dataset_iris &lt;- data(iris)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YXNldCA8LSBpcmlzXG5gYGAifQ== -->
+<pre class="r"><code>dataset &lt;- iris</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>We now split the dataset into data used for training (80%) and for testing (20%)</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBjcmVhdGUgYSBsaXN0IG9mIDgwJSBvZiB0aGUgcm93cyBpbiB0aGUgb3JpZ2luYWwgZGF0YXNldCB3ZSBjYW4gdXNlIGZvciB0cmFpbmluZ1xudmFsaWRhdGlvbl9pbmRleCA8LSBjcmVhdGVEYXRhUGFydGl0aW9uKGRhdGFzZXQkU3BlY2llcywgcD0wLjgwLCBsaXN0PUZBTFNFKVxuIyBzZWxlY3QgMjAlIG9mIHRoZSBkYXRhIGZvciB2YWxpZGF0aW9uXG52YWxpZGF0aW9uIDwtIGRhdGFzZXRbLXZhbGlkYXRpb25faW5kZXhdXG4jIHVzZSB0aGUgcmVtYWluaW5nIDgwJSBvZiBkYXRhIHRvIHRyYWluaW5nIGFuZCB0ZXN0aW5nIHRoZSBtb2RlbHNcbmRhdGFzZXRfODAgPC0gZGF0YXNldFt2YWxpZGF0aW9uX2luZGV4LF1cbmBgYCJ9 -->
+<pre class="r"><code># create a list of 80% of the rows in the original dataset we can use for training
+validation_index &lt;- createDataPartition(dataset$Species, p=0.80, list=FALSE)
+# select 20% of the data for validation
+validation &lt;- dataset[-validation_index]
+# use the remaining 80% of data to training and testing the models
+dataset_80 &lt;- dataset[validation_index,]</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>now we inspect the data</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChkYXRhc2V0KVxuYGBgIn0= -->
+<pre class="r"><code>head(dataset)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6NSwibnJvdyI6Nn0sInJkZiI6Ikg0c0lBQUFBQUFBQUJvVlMwVTdDTUJRdEd4dHNEakNBbjhHaUVwNVpvbzgrRUhtUTF6b0tOTlp1NlFyNjZHL29INUhvQi9nZnhwaVlvTzNhTG1PU2VKUGwzcDZkYysvTzdhNHZaME4vNWdNQWJHQzdGckFkVVFMM1luSjJQam9Gb0c2SlV3M1VnU2Z6bzJEMVJDRTViVW1MK29zOG90NnpqSmVvK3lyakxlcHF2QS95aUU3VSswSVhhTHlwczZmMVRhMFBkTzRNOHpDNjhhZnFXK1FQeFJ0L3FUNEYvbDNSYlZYL2YvTzcrVTY3SlhXNStZUFAzbUpjZ2phSVpLSTZ6aGVwMFF6eEpJUDY1RzhReTNDY2tJUnB4TnRndHNRVXg3RFN6b2tKekV5M1lzWUN4bHhvQWRoVjZSVGVJME4zTkJoTVVRcEplSVhva3E4MGRxU3dHend2b0dDQytCK2F3c3EweGpSRk1aWkQ5aVo3TEhrSXpYUzVNT3RKM1lPcmlQWlB4WVEvaHh5R0N5WWtCNHcwa3BUamhJcG1sdm5MeXVJYXF3Q2ROWlhENTRONHRhWjNnNUVjVUxxbGxzNXVxWGJVeUxyNU1MTXVWeXdBVTJRMlN1QXRJdnJRRmlaemoySEtNT1hHaVVDemtDZGlVd1lSZDJ1UTNCdlkvUUlRZXIrc1hRTUFBQT09In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Sepal.Length"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Sepal.Width"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Petal.Length"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Petal.Width"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Species"],"name":[5],"type":["fctr"],"align":["left"]}],"data":[{"1":"5.1","2":"3.5","3":"1.4","4":"0.2","5":"setosa","_rn_":"1"},{"1":"4.9","2":"3.0","3":"1.4","4":"0.2","5":"setosa","_rn_":"2"},{"1":"4.7","2":"3.2","3":"1.3","4":"0.2","5":"setosa","_rn_":"3"},{"1":"4.6","2":"3.1","3":"1.5","4":"0.2","5":"setosa","_rn_":"4"},{"1":"5.0","2":"3.6","3":"1.4","4":"0.2","5":"setosa","_rn_":"5"},{"1":"5.4","2":"3.9","3":"1.7","4":"0.4","5":"setosa","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[5]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGltKGRhdGFzZXQpXG5gYGAifQ== -->
+<pre class="r"><code>dim(dataset)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDE1MCAgIDVcbiJ9 -->
+<pre><code>[1] 150   5</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGltKGRhdGFzZXRfODApXG5gYGAifQ== -->
+<pre class="r"><code>dim(dataset_80)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEyMCAgIDVcbiJ9 -->
+<pre><code>[1] 120   5</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>dataset has 150 instances and 5 attributes dataset_80 has 120 instances and 5 attributes</p>
+<p>We now investigate the types for each attribute</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2FwcGx5KGRhdGFzZXQsIGNsYXNzKVxuYGBgIn0= -->
+<pre class="r"><code>sapply(dataset, class)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiU2VwYWwuTGVuZ3RoICBTZXBhbC5XaWR0aCBQZXRhbC5MZW5ndGggIFBldGFsLldpZHRoICAgICAgU3BlY2llcyBcbiAgIFwibnVtZXJpY1wiICAgIFwibnVtZXJpY1wiICAgIFwibnVtZXJpY1wiICAgIFwibnVtZXJpY1wiICAgICBcImZhY3RvclwiIFxuIn0= -->
+<pre><code>Sepal.Length  Sepal.Width Petal.Length  Petal.Width      Species 
+   &quot;numeric&quot;    &quot;numeric&quot;    &quot;numeric&quot;    &quot;numeric&quot;     &quot;factor&quot; </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Notice column <code>Species</code> is of type factor. What levels are there for <code>Species</code>?</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGV2ZWxzKGRhdGFzZXQkU3BlY2llcylcbmBgYCJ9 -->
+<pre class="r"><code>levels(dataset$Species)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwic2V0b3NhXCIgICAgIFwidmVyc2ljb2xvclwiIFwidmlyZ2luaWNhXCIgXG4ifQ== -->
+<pre><code>[1] &quot;setosa&quot;     &quot;versicolor&quot; &quot;virginica&quot; </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>There are 3 possible species, hence we are dealing with a multinomial classification problem.</p>
+<p>Now, how many representatives of each species are there?</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YXNldCAlPiUgZ3JvdXBfYnkoU3BlY2llcykgJT4lIHN1bW1hcmlzZShuKCkpXG5gYGAifQ== -->
+<pre class="r"><code>dataset %&gt;% group_by(Species) %&gt;% summarise(n())</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCB1bmdyb3VwaW5nIG91dHB1dCAob3ZlcnJpZGUgd2l0aCBgLmdyb3Vwc2AgYXJndW1lbnQpXG4ifQ== -->
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibmNvbCI6MiwibnJvdyI6M30sInJkZiI6Ikg0c0lBQUFBQUFBQUJsMVJ5MDdETUJEYzJFbXFST0loOFJOd2FBUUZ2Z0ErQU1HbFYrTzYxS3F4STlzTkhQbHhHdGFKWFpRYzdPeU9kMlozSjYvUDYvdDZYUU1BQlZvU29BV0dVRDY5M0swZWJ3RnlnbGtHT1ZUaCs0MVZWeGdnU004R1NuZ2M4aEJQaWtzbE9xRWNScGZEYTBTZDhNYXhtTldkc0U1eW80eU5TTlZKK3lHMTVHd21WM0RGWEZJNzlkZ3k3cEVMY01TVEpscjluNm1FWnA4aVNaQUlMdDVhd1NYQ1kwcjE5YzJNVmxuejFTUnE2RUYrOE9yNy9uY3NwUDFzcW5yRFBHdTJGaW5qWkJPNWhXbTlOQnJGU0xDeW1KRXpPd011RGpvMDN5ejU3cUQzeTRmUUlOb09jYUFzTHA1aU1yYk0wMkJGc2t0bzlGWWtPeFI3RnlvbTU3amtzR1BUV3FsOTJnUlIxM2pqV2FxcjhXY2xaSFQ5K0FjY1ZOVHpRZ0lBQUE9PSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Species"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["n()"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"setosa","2":"50"},{"1":"versicolor","2":"50"},{"1":"virginica","2":"50"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[3]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>The original dataset contains 50 representatives of each species</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YXNldF84MCAlPiUgZ3JvdXBfYnkoU3BlY2llcykgJT4lIHN1bW1hcmlzZShuKCkpXG5gYGAifQ== -->
+<pre class="r"><code>dataset_80 %&gt;% group_by(Species) %&gt;% summarise(n())</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCB1bmdyb3VwaW5nIG91dHB1dCAob3ZlcnJpZGUgd2l0aCBgLmdyb3Vwc2AgYXJndW1lbnQpXG4ifQ== -->
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibmNvbCI6MiwibnJvdyI6M30sInJkZiI6Ikg0c0lBQUFBQUFBQUJsMVJ5MDdETUJEYzJFbXFST0loOFJQbDBLaUErZ1h3QVFndXZSclhCYXZHam13M2NPVEhhVmduTmxWeXNMTTczcG5kbmJ3OGJSL3FiUTBBRkdoSmdCWVlRdm40ZkhlL1dRUGtCTE1NY3FqQzl4dXJiakJBa0Y0TWxQQTQ1Q0dlRkpkS2RFSTVqSzZIMTRnNjRZMWpNYXM3WVoza1Joa2JrYXFUOWwxcXlkbE1ydUNLdWFUMjMyUFB1RWN1d0FsUG1taDVQbE1KelQ1RmtpQVJYTHkyZ2t1RXg1VHE1ZTJNVmxuejFTUnE2RUYrOE9yNy9uY3NwUDFzcW5ySFBHdjJGaW5qWkJPNWhXbTlOQnJGU0xDeW1KRXpPd091ampvMDM2MzR4MUVmVnB2UUlOb09jYUFzTHA1aU1yYk0wMkJGc2t0bzlGWWtPeFI3RXlvbWw3amtzR1BUV3FsOTJnUlIxM2pqV2FxcjhXY2xaSFQ5OUFjVmVTbURRZ0lBQUE9PSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Species"],"name":[1],"type":["fctr"],"align":["left"]},{"label":["n()"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"setosa","2":"40"},{"1":"versicolor","2":"40"},{"1":"virginica","2":"40"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[3]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>The training dataset contains 40 representatives of each species</p>
+<p>Now let’s visualise the training dataset using box and whiskers diagrams</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBzcGxpdCBkZXBlbmRhbnQgYW5kIGluZGVwZW5kYW50IHZhcmlhYmxlc1xueCA8LSBkYXRhc2V0XzgwWywxOjRdXG55IDwtIGRhdGFzZXRfODBbLDVdXG5gYGAifQ== -->
+<pre class="r"><code># split dependant and independant variables
+x &lt;- dataset_80[,1:4]
+y &lt;- dataset_80[,5]</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBib3hwbG90IGZvciBlYWNoIGF0dHJpYnV0ZSBvbiBvbmUgaW1hZ2VcbnBhcihtZnJvdz1jKDEsNCkpXG4gIGZvcihpIGluIDE6NCkge1xuICBib3hwbG90KHhbLGldLCBtYWluPW5hbWVzKGlyaXMpW2ldKVxufVxuYGBgIn0= -->
+<pre class="r"><code># boxplot for each attribute on one image
+par(mfrow=c(1,4))
+  for(i in 1:4) {
+  boxplot(x[,i], main=names(iris)[i])
+}</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-plot-begin eyJjb25kaXRpb25zIjpbXSwiaGVpZ2h0Ijo0MzIuNjMyOSwic2l6ZV9iZWhhdmlvciI6MCwid2lkdGgiOjcwMH0= -->
+<p><img src="data:image/png;base64,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" /></p>
+<!-- rnb-plot-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIk1hY2hpbmUgTGVhcm5pbmcgSGVsbG8gV29ybGQiDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQoNCmxvYWQgY2FyZXQNCmBgYHtyfQ0KbGlicmFyeShjYXJldCkNCmBgYA0KbG9hZCBkYXRhDQpgYGB7cn0NCmRhdGFzZXRfaXJpcyA8LSBkYXRhKGlyaXMpDQpgYGANCg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIk1hY2hpbmUgTGVhcm5pbmcgSGVsbG8gV29ybGQiDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQoNCmxvYWQgY2FyZXQNCmBgYHtyfQ0KbGlicmFyeShjYXJldCkNCmxpYnJhcnkodGlkeXZlcnNlKQ0KYGBgDQpsb2FkIGRhdGENCmBgYHtyfQ0KZGF0YXNldCA8LSBpcmlzDQpgYGANCg0KV2Ugbm93IHNwbGl0IHRoZSBkYXRhc2V0IGludG8gZGF0YSB1c2VkIGZvciB0cmFpbmluZyAoODAlKSBhbmQgZm9yIHRlc3RpbmcgKDIwJSkNCmBgYHtyfQ0KIyBjcmVhdGUgYSBsaXN0IG9mIDgwJSBvZiB0aGUgcm93cyBpbiB0aGUgb3JpZ2luYWwgZGF0YXNldCB3ZSBjYW4gdXNlIGZvciB0cmFpbmluZw0KdmFsaWRhdGlvbl9pbmRleCA8LSBjcmVhdGVEYXRhUGFydGl0aW9uKGRhdGFzZXQkU3BlY2llcywgcD0wLjgwLCBsaXN0PUZBTFNFKQ0KIyBzZWxlY3QgMjAlIG9mIHRoZSBkYXRhIGZvciB2YWxpZGF0aW9uDQp2YWxpZGF0aW9uIDwtIGRhdGFzZXRbLXZhbGlkYXRpb25faW5kZXhdDQojIHVzZSB0aGUgcmVtYWluaW5nIDgwJSBvZiBkYXRhIHRvIHRyYWluaW5nIGFuZCB0ZXN0aW5nIHRoZSBtb2RlbHMNCmRhdGFzZXRfODAgPC0gZGF0YXNldFt2YWxpZGF0aW9uX2luZGV4LF0NCmBgYA0Kbm93IHdlIGluc3BlY3QgdGhlIGRhdGENCmBgYHtyfQ0KaGVhZChkYXRhc2V0KQ0KZGltKGRhdGFzZXQpDQpkaW0oZGF0YXNldF84MCkNCmBgYA0KZGF0YXNldCBoYXMgMTUwIGluc3RhbmNlcyBhbmQgNSBhdHRyaWJ1dGVzDQpkYXRhc2V0XzgwIGhhcyAxMjAgaW5zdGFuY2VzIGFuZCA1IGF0dHJpYnV0ZXMNCg0KV2Ugbm93IGludmVzdGlnYXRlIHRoZSB0eXBlcyBmb3IgZWFjaCBhdHRyaWJ1dGUNCmBgYHtyfQ0Kc2FwcGx5KGRhdGFzZXQsIGNsYXNzKQ0KYGBgDQpOb3RpY2UgY29sdW1uIGBTcGVjaWVzYCBpcyBvZiB0eXBlIGZhY3Rvci4gV2hhdCBsZXZlbHMgYXJlIHRoZXJlIGZvciBgU3BlY2llc2A/DQpgYGB7cn0NCmxldmVscyhkYXRhc2V0JFNwZWNpZXMpDQpgYGANClRoZXJlIGFyZSAzIHBvc3NpYmxlIHNwZWNpZXMsIGhlbmNlIHdlIGFyZSBkZWFsaW5nIHdpdGggYSBtdWx0aW5vbWlhbCBjbGFzc2lmaWNhdGlvbiBwcm9ibGVtLg0KDQpOb3csIGhvdyBtYW55IHJlcHJlc2VudGF0aXZlcyBvZiBlYWNoIHNwZWNpZXMgYXJlIHRoZXJlPw0KYGBge3J9DQpkYXRhc2V0ICU+JSBncm91cF9ieShTcGVjaWVzKSAlPiUgc3VtbWFyaXNlKG4oKSkNCmBgYA0KVGhlIG9yaWdpbmFsIGRhdGFzZXQgY29udGFpbnMgNTAgcmVwcmVzZW50YXRpdmVzIG9mIGVhY2ggc3BlY2llcw0KYGBge3J9DQpkYXRhc2V0XzgwICU+JSBncm91cF9ieShTcGVjaWVzKSAlPiUgc3VtbWFyaXNlKG4oKSkNCmBgYA0KVGhlIHRyYWluaW5nIGRhdGFzZXQgY29udGFpbnMgNDAgcmVwcmVzZW50YXRpdmVzIG9mIGVhY2ggc3BlY2llcw0KDQpOb3cgbGV0J3MgdmlzdWFsaXNlIHRoZSB0cmFpbmluZyBkYXRhc2V0IHVzaW5nIGJveCBhbmQgd2hpc2tlcnMgZGlhZ3JhbXMNCmBgYHtyfQ0KIyBzcGxpdCBkZXBlbmRhbnQgYW5kIGluZGVwZW5kYW50IHZhcmlhYmxlcw0KeCA8LSBkYXRhc2V0XzgwWywxOjRdDQojIHNlbGVjdCBvbmx5IG5hbWUgb2Ygc3BlY2llcw0KeSA8LSBkYXRhc2V0XzgwWyw1XQ0KYGBgDQoNCmBgYHtyfQ0KIyBib3hwbG90IGZvciBlYWNoIGF0dHJpYnV0ZSBvbiBvbmUgaW1hZ2UNCnBhcihtZnJvdz1jKDEsNCkpDQogIGZvcihpIGluIDE6NCkgew0KICBib3hwbG90KHhbLGldLCBtYWluPW5hbWVzKGlyaXMpW2ldKQ0KfQ0KYGBgDQoNCg0KDQoNCg0KDQoNCg0K</div>
 
 
 
